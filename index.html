@@ -1,91 +1,39 @@
+<!DOCTYPE html>
 <html>
 <head>
-	<title>Play Sound at Predetermined Times</title>
-	<style>
-		body {
-			background-color: red;
-			color: white;
-			font-size: 48px;
-			text-align: center;
-		}
-		.orange {
-			background-color: orange;
-		}
-	</style>
-</head>
-<body>
-
-	<div id="timer"></div>
-	<div id="text">Hitri Zmenek</div>
-
-	<audio id="sound1" src="sounds/sound1.mp3"></audio>
-	<audio id="sound2" src="sounds/sound2.mp3"></audio>
-
-	<script>
-		// Define the starting time, ending time, and interval for playing the sound
-		var startHour = 14;
-		var startMinute = 30;
-		var endHour = 20;
-		var interval = 15; // play the sound every 15 seconds
-
-		// Get the current time
-		var currentTime = new Date();
-
-		// Calculate the next play time based on the starting time and interval
-		var nextPlayTime = new Date();
-		nextPlayTime.setHours(startHour);
-		nextPlayTime.setMinutes(startMinute);
-		nextPlayTime.setSeconds(0);
-		while (nextPlayTime < currentTime) {
-			nextPlayTime.setSeconds(nextPlayTime.getSeconds() + interval);
+	<title>Countdown and Sound Sequence</title>
+	<script type="text/javascript">
+		function playSound(soundFile) {
+			var audio = new Audio(soundFile);
+			audio.play();
 		}
 
-		// Keep playing the sound until the end time is reached
-		var timer = setInterval(function() {
-			// Get the current time
+		function startSequence() {
 			var currentTime = new Date();
+			var hours = currentTime.getHours();
+			var minutes = currentTime.getMinutes();
 
-			// Check if the current time is before or after the next play time
-			if (currentTime.getTime() >= nextPlayTime.getTime() - 1000*2 && currentTime.getTime() < nextPlayTime.getTime() - 1000*1) {
-				// Play the first sound
-				var sound1 = document.getElementById("sound1");
-				sound1.play();
+			if (hours >= 14 && minutes >= 30 && hours <= 22) {
+				var countdownTimer = setInterval(function() {
+					var currentTime = new Date();
+					var seconds = 30 - (currentTime.getSeconds() % 30);
+					document.getElementById("countdown").innerHTML = seconds + " seconds until next sound";
 
-				// Change the background color and text
-				document.body.classList.remove("orange");
-				document.getElementById("text").innerHTML = "Hitri Zmenek";
-
-				// Update the timer display
-				var secondsLeft = Math.round((nextPlayTime.getTime() - currentTime.getTime()) / 1000);
-				document.getElementById("timer").innerHTML = secondsLeft + " seconds until next sound";
+					if (seconds == 15) {
+						playSound("sound/sound1.mp3");
+						document.getElementById("message").innerHTML = "Hitri zmenki";
+					} else if (seconds == 0) {
+						playSound("sound/sound2.mp3");
+						document.getElementById("message").innerHTML = "zamenjaj podjetje";
+					}
+				}, 1000);
 			}
-			else if (currentTime.getTime() >= nextPlayTime.getTime() - 1000*1) {
-				// Play the second sound
-				var sound2 = document.getElementById("sound2");
-				sound2.play();
-
-				// Change the background color and text
-				document.body.classList.add("orange");
-				document.getElementById("text").innerHTML = "Menjanje stonice";
-
-				// Update the timer display
-				document.getElementById("timer").innerHTML = "2 minutes until next sound";
-
-				// Calculate the next play time
-				nextPlayTime.setSeconds(nextPlayTime.getSeconds() + interval);
-
-				// Stop playing the sound if the end time is reached
-				if (nextPlayTime.getHours() >= endHour) {
-					clearInterval(timer);
-				}
-			}
-			else {
-				// Update the timer display
-				var secondsLeft = Math.round((nextPlayTime.getTime() - currentTime.getTime()) / 1000);
-				document.getElementById("timer").innerHTML = secondsLeft + " seconds until next sound";
-			}
-		}, 1000);
+		}
 	</script>
-
+</head>
+<body onload="startSequence()">
+	<h1>Countdown and Sound Sequence</h1>
+	<p id="message">-</p>
+	<p id="countdown">-</p>
 </body>
 </html>
