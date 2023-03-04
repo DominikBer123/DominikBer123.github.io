@@ -20,10 +20,10 @@
 					document.getElementById("countdown").innerHTML = seconds + " seconds until next sound";
 
 					if (seconds == 15) {
-						playSound("sound/sound1.mp3");
+						playSound("sounds/sound1.mp3");
 						document.getElementById("message").innerHTML = "Hitri zmenki";
 					} else if (seconds == 0) {
-						playSound("sound/sound2.mp3");
+						playSound("sounds/sound2.mp3");
 						document.getElementById("message").innerHTML = "zamenjaj podjetje";
 					}
 				}, 1000);
