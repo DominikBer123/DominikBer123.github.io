@@ -1,40 +1,75 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Countdown and Sound Sequence</title>
-	<script type="text/javascript">
-		function playSound(soundFile) {
-			var audio = new Audio(soundFile);
-			audio.play();
-		}
-
-		function startSequence() {
-			var currentTime = new Date();
-			var hours = currentTime.getHours();
-			var minutes = currentTime.getMinutes();
-
-			if (hours >= 14 && minutes >= 30 && hours <= 23) {
-				var countdownTimer = setInterval(function() {
-					var currentTime = new Date();
-					var totalSeconds = (currentTime.getHours() - 14) * 3600 + (currentTime.getMinutes() - 30) * 60 + currentTime.getSeconds();
-					var seconds = 21600 - totalSeconds % 21600;
-					document.getElementById("countdown").innerHTML = seconds + " seconds until next sound";
-
-					if (seconds == 3420) { // 6 minutes + 15 seconds
-						playSound("sounds/sound1.mp3");
-						document.getElementById("message").innerHTML = "Hitri zmenki";
-					} else if (seconds == 1980) { // 2 minutes after the first sound
-						playSound("sounds/sound2.mp3");
-						document.getElementById("message").innerHTML = "zamenjaj podjetje";
-					}
-				}, 1000);
-			}
-		}
-	</script>
+	<title>Timer with Sound</title>
 </head>
-<body onload="startSequence()">
-	<h1>Countdown and Sound Sequence</h1>
-	<p id="message">-</p>
-	<p id="countdown">-</p>
+<body>
+
+	<!-- Display countdown until next sound -->
+	<p>Next sound in: <span id="countdown"></span></p>
+
+	<!-- Display text based on sequence -->
+	<h1 id="sequence-text"></h1>
+
+	<!-- Play sound files -->
+	<audio id="sound1" src="sounds/sound1.mp3"></audio>
+	<audio id="sound2" src="sounds/sound2.mp3"></audio>
+
+	<!-- JavaScript to control timer and sequence -->
+	<script type="text/javascript">
+		var startTime = new Date();
+		startTime.setHours(14, 30, 0); // Set timer start time
+
+		var endTime = new Date();
+		endTime.setHours(23, 0, 0); // Set timer end time
+
+		var sequenceLength = 8 * 60 * 1000; // Sequence length in milliseconds
+		var sound1Time = 6 * 60 * 1000; // Time to play sound1 in milliseconds
+		var sound2Time = sequenceLength - 1000; // Time to play sound2 in milliseconds
+
+		var countdownElement = document.getElementById('countdown');
+		var sequenceTextElement = document.getElementById('sequence-text');
+		var sound1Element = document.getElementById('sound1');
+		var sound2Element = document.getElementById('sound2');
+
+		var updateTimer = function() {
+			var currentTime = new Date();
+			var timeDiff = endTime - currentTime;
+
+			if (timeDiff <= 0) {
+				// Timer has ended
+				clearInterval(intervalId);
+				return;
+			}
+
+			// Calculate time remaining until next sound
+			var timeRemaining;
+			var sequenceText;
+			if (currentTime < startTime || currentTime > (startTime + sequenceLength)) {
+				// Before or after sequence
+				timeRemaining = startTime - currentTime;
+				sequenceText = '';
+			} else if (currentTime < (startTime + sound1Time)) {
+				// First part of sequence
+				timeRemaining = (startTime + sound1Time) - currentTime;
+				sequenceText = 'Hitri zmenki';
+				sound1Element.play(); // Play sound1
+			} else {
+				// Second part of sequence
+				timeRemaining = (startTime + sequenceLength) - currentTime;
+				sequenceText = 'zamenjaj podjetje';
+				if (timeRemaining <= 1000) {
+					sound2Element.play(); // Play sound2
+				}
+			}
+
+			// Display countdown and sequence text
+			countdownElement.innerHTML = (timeRemaining / 1000).toFixed(0);
+			sequenceTextElement.innerHTML = sequenceText;
+		};
+
+		var intervalId = setInterval(updateTimer, 1000);
+	</script>
+
 </body>
 </html>
