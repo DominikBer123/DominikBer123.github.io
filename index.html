@@ -1,9 +1,64 @@
-<!DOCTYPE html>
 <html>
-    <head>
-        <title>Example</title>
-    </head>
-    <body>
-        <p>This is an example of a simple HTML page with one paragraph.</p>
-    </body>
+<head>
+	<title>Play Sound at Predetermined Times</title>
+</head>
+<body>
+	<div id="timer"></div>
+	<audio id="sound1" src="sounds/sound1.mp3"></audio>
+	<audio id="sound2" src="sounds/sound2.mp3"></audio>
+
+	<script>
+		// Define the starting time, ending time, and interval for playing the sound
+		var startHour = 20;
+		var startMinute = 45;
+		var endHour = 22;
+		var interval = 15; // play the sound every 15 seconds
+
+		// Get the current time
+		var currentTime = new Date();
+
+		// Calculate the next play time based on the starting time and interval
+		var nextPlayTime = new Date();
+		nextPlayTime.setHours(startHour);
+		nextPlayTime.setMinutes(startMinute);
+		while (nextPlayTime < currentTime) {
+			nextPlayTime.setSeconds(nextPlayTime.getSeconds() + interval);
+		}
+
+		// Update the timer to show the next play time
+		var timerElement = document.getElementById("timer");
+		timerElement.innerHTML = "Next sound will play at " + nextPlayTime.toLocaleTimeString();
+
+		// Keep playing the sound until the end time is reached
+		var timer = setInterval(function() {
+			// Get the current time
+			var currentTime = new Date();
+
+			// Check if the current time is before or after the next play time
+			if (currentTime.getTime() >= nextPlayTime.getTime() - 1000*interval && currentTime.getTime() < nextPlayTime.getTime()) {
+				// Play the first sound
+				var sound1 = document.getElementById("sound1");
+				sound1.play();
+			}
+			else if (currentTime.getTime() >= nextPlayTime.getTime()) {
+				// Play the second sound
+				var sound2 = document.getElementById("sound2");
+				sound2.play();
+
+				// Calculate the next play time
+				nextPlayTime.setSeconds(nextPlayTime.getSeconds() + interval);
+
+				// Update the timer to show the next play time
+				timerElement.innerHTML = "Next sound will play at " + nextPlayTime.toLocaleTimeString();
+
+				// Stop playing the sound if the end time is reached
+				if (nextPlayTime.getHours() >= endHour) {
+					clearInterval(timer);
+					timerElement.innerHTML = "End time reached";
+				}
+			}
+		}, 1000);
+	</script>
+
+</body>
 </html>
