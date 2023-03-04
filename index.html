@@ -16,13 +16,14 @@
 			if (hours >= 14 && minutes >= 30 && hours <= 22) {
 				var countdownTimer = setInterval(function() {
 					var currentTime = new Date();
-					var seconds = 30 - (currentTime.getSeconds() % 30);
+					var totalSeconds = (currentTime.getHours() - 14) * 3600 + (currentTime.getMinutes() - 30) * 60 + currentTime.getSeconds();
+					var seconds = 21600 - totalSeconds % 21600;
 					document.getElementById("countdown").innerHTML = seconds + " seconds until next sound";
 
-					if (seconds == 360) { // 6 minutes
+					if (seconds == 3420) { // 6 minutes + 15 seconds
 						playSound("sounds/sound1.mp3");
 						document.getElementById("message").innerHTML = "Hitri zmenki";
-					} else if (seconds == 120) { // 2 minutes after the first sound
+					} else if (seconds == 1980) { // 2 minutes after the first sound
 						playSound("sounds/sound2.mp3");
 						document.getElementById("message").innerHTML = "zamenjaj podjetje";
 					}
