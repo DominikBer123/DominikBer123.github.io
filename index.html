@@ -68,7 +68,17 @@
 			sequenceTextElement.innerHTML = sequenceText;
 		};
 
-		var intervalId = setInterval(updateTimer, 1000);
+		// Call updateTimer after appropriate delay
+		var delay = startTime - new Date();
+		if (delay > 0) {
+			setTimeout(function() {
+				updateTimer();
+				intervalId = setInterval(updateTimer, 1000);
+			}, delay);
+		} else {
+			updateTimer();
+			intervalId = setInterval(updateTimer, 1000);
+		}
 	</script>
 
 </body>
