@@ -1,18 +1,32 @@
 <html>
 <head>
 	<title>Play Sound at Predetermined Times</title>
+	<style>
+		body {
+			background-color: red;
+			color: white;
+			font-size: 48px;
+			text-align: center;
+		}
+		.orange {
+			background-color: orange;
+		}
+	</style>
 </head>
 <body>
+
+	<div id="timer"></div>
+	<div id="text">Hitri Zmenek</div>
 
 	<audio id="sound1" src="sounds/sound1.mp3"></audio>
 	<audio id="sound2" src="sounds/sound2.mp3"></audio>
 
 	<script>
 		// Define the starting time, ending time, and interval for playing the sound
-		var startHour = 14;
+		var startHour = 20;
 		var startMinute = 30;
-		var endHour = 18;
-		var interval = 15; // play the sounds with 15 seconds interval
+		var endHour = 22;
+		var interval = 15; // play the sound every 15 seconds
 
 		// Get the current time
 		var currentTime = new Date();
@@ -21,6 +35,7 @@
 		var nextPlayTime = new Date();
 		nextPlayTime.setHours(startHour);
 		nextPlayTime.setMinutes(startMinute);
+		nextPlayTime.setSeconds(0);
 		while (nextPlayTime < currentTime) {
 			nextPlayTime.setSeconds(nextPlayTime.getSeconds() + interval);
 		}
@@ -31,18 +46,30 @@
 			var currentTime = new Date();
 
 			// Check if the current time is before or after the next play time
-			if (currentTime.getTime() >= nextPlayTime.getTime() - 1000*5 && currentTime.getTime() < nextPlayTime.getTime()) {
+			if (currentTime.getTime() >= nextPlayTime.getTime() - 1000*2 && currentTime.getTime() < nextPlayTime.getTime() - 1000*1) {
 				// Play the first sound
 				var sound1 = document.getElementById("sound1");
 				sound1.play();
+
+				// Change the background color and text
+				document.body.classList.remove("orange");
+				document.getElementById("text").innerHTML = "Hitri Zmenek";
+
+				// Update the timer display
+				var secondsLeft = Math.round((nextPlayTime.getTime() - currentTime.getTime()) / 1000);
+				document.getElementById("timer").innerHTML = secondsLeft + " seconds until next sound";
 			}
-			else if (currentTime.getTime() >= nextPlayTime.getTime() - 1000*2 && currentTime.getTime() < nextPlayTime.getTime()) {
-				// Pause for 2 seconds
-			}
-			else if (currentTime.getTime() >= nextPlayTime.getTime() - 1000*interval && currentTime.getTime() < nextPlayTime.getTime()) {
+			else if (currentTime.getTime() >= nextPlayTime.getTime() - 1000*1) {
 				// Play the second sound
 				var sound2 = document.getElementById("sound2");
 				sound2.play();
+
+				// Change the background color and text
+				document.body.classList.add("orange");
+				document.getElementById("text").innerHTML = "Menjanje stonice";
+
+				// Update the timer display
+				document.getElementById("timer").innerHTML = "2 minutes until next sound";
 
 				// Calculate the next play time
 				nextPlayTime.setSeconds(nextPlayTime.getSeconds() + interval);
@@ -51,6 +78,11 @@
 				if (nextPlayTime.getHours() >= endHour) {
 					clearInterval(timer);
 				}
+			}
+			else {
+				// Update the timer display
+				var secondsLeft = Math.round((nextPlayTime.getTime() - currentTime.getTime()) / 1000);
+				document.getElementById("timer").innerHTML = secondsLeft + " seconds until next sound";
 			}
 		}, 1000);
 	</script>
