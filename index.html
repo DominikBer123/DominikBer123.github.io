@@ -13,7 +13,15 @@
 			clearTimeout(timer);
 			document.getElementById("timer").innerHTML = "Hitri zmenki";
 			sound1.play();
-			timer = setTimeout(playSound2, 120000); // play sound2 after 2 minutes
+			var countdown = 120; // countdown for 2 minutes
+			timer = setInterval(function() {
+				countdown--;
+				document.getElementById("timer").innerHTML = "Next sound in " + countdown + " seconds";
+				if (countdown == 0) {
+					clearInterval(timer);
+					playSound2();
+				}
+			}, 1000);
 		}
 		
 		// define a function to play sound2 and start the countdown timer
@@ -21,13 +29,28 @@
 			clearTimeout(timer);
 			document.getElementById("timer").innerHTML = "Zamenjaj podjetja";
 			sound2.play();
-			timer = setTimeout(playSound1, 360000); // play sound1 after 6 minutes
+			var countdown = 360; // countdown for 6 minutes
+			timer = setInterval(function() {
+				countdown--;
+				document.getElementById("timer").innerHTML = "Next sound in " + countdown + " seconds";
+				if (countdown == 0) {
+					clearInterval(timer);
+					playSound1();
+				}
+			}, 1000);
 		}
 		
 		// define a function to start the loop
 		function startLoop() {
 			// play sound1 after 6 minutes
-			timer = setTimeout(playSound1, 360000);
+			var currentTime = new Date();
+			var startTime = new Date(currentTime.getFullYear(), currentTime.getMonth(), currentTime.getDate(), 8, 30, 0); // start at 8.30 am
+			var elapsedTime = currentTime - startTime;
+			if (elapsedTime < 0) {
+				timer = setTimeout(playSound1, -elapsedTime);
+			} else {
+				timer = setTimeout(playSound1, 360000 - elapsedTime % 360000);
+			}
 		}
 		
 		// define a function to stop the loop
