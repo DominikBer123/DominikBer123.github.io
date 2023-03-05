@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 <head>
 	<title>Timer with Sound</title>
@@ -5,7 +6,7 @@
 <body>
 
 	<!-- Display countdown until next sound -->
-	<p>Next sound in: <span id="countdown"></span></p>
+	<p>Next sound in: <span id="countdown">-</span> seconds</p>
 
 	<!-- Display text based on sequence -->
 	<h1 id="sequence-text"></h1>
@@ -27,6 +28,7 @@
 		var sound2Time = sequenceLength - 1000; // Time to play sound2 in milliseconds
 
 		var countdownElement = document.getElementById('countdown');
+		countdownElement.innerHTML = (startTime - new Date()) / 1000; // Initialize countdown with default value
 		var sequenceTextElement = document.getElementById('sequence-text');
 		var sound1Element = document.getElementById('sound1');
 		var sound2Element = document.getElementById('sound2');
