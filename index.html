@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html>
 <head>
 	<title>Sound Player</title>
@@ -7,62 +6,49 @@
 		var sound1 = new Audio("sounds/sound1.mp3");
 		var sound2 = new Audio("sounds/sound2.mp3");
 		var timer;
-		
-		// define a function to play sound1 and start the countdown timer
-		function playSound1() {
-			clearTimeout(timer);
-			document.getElementById("timer").innerHTML = "Hitri zmenki";
-			sound1.play();
-			var countdown = 120; // countdown for 2 minutes
-			timer = setInterval(function() {
-				countdown--;
-				document.getElementById("timer").innerHTML = "Next sound in " + countdown + " seconds";
-				if (countdown == 0) {
-					clearInterval(timer);
-					playSound2();
-				}
-			}, 1000);
-		}
-		
-		// define a function to play sound2 and start the countdown timer
-		function playSound2() {
-			clearTimeout(timer);
-			document.getElementById("timer").innerHTML = "Zamenjaj podjetja";
-			sound2.play();
-			var countdown = 360; // countdown for 6 minutes
-			timer = setInterval(function() {
-				countdown--;
-				document.getElementById("timer").innerHTML = "Next sound in " + countdown + " seconds";
-				if (countdown == 0) {
-					clearInterval(timer);
-					playSound1();
-				}
-			}, 1000);
-		}
-		
-		// define a function to start the loop
-		function startLoop() {
-			// play sound1 after 6 minutes
+
+		// define a function to check the time and play the sounds
+		function checkTime() {
 			var currentTime = new Date();
 			var startTime = new Date(currentTime.getFullYear(), currentTime.getMonth(), currentTime.getDate(), 8, 30, 0); // start at 8.30 am
-			var elapsedTime = currentTime - startTime;
-			if (elapsedTime < 0) {
-				timer = setTimeout(playSound1, -elapsedTime);
-			} else {
-				timer = setTimeout(playSound1, 360000 - elapsedTime % 360000);
+			var endTime = new Date(currentTime.getFullYear(), currentTime.getMonth(), currentTime.getDate(), 12, 0, 0); // end at 12.00 pm
+			if (currentTime >= startTime && currentTime <= endTime) { // only play sounds during the specified time range
+				var elapsedMinutes = (currentTime.getMinutes() + 60 * currentTime.getHours() - 510) % 10; // get the number of elapsed 10-minute intervals
+				if (elapsedMinutes == 6 && !sound1.paused) { // play sound1 after 6 minutes
+					sound1.pause();
+					sound1.currentTime = 0;
+					sound2.pause();
+					sound2.currentTime = 0;
+					sound1.play();
+					timer = setInterval(function() {
+						document.getElementById("timer").innerHTML = "Next sound in 2 minutes";
+					}, 1000);
+				} else if (elapsedMinutes == 8 && !sound2.paused) { // play sound2 after 8 minutes
+					sound1.pause();
+					sound1.currentTime = 0;
+					sound2.pause();
+					sound2.currentTime = 0;
+					sound2.play();
+					timer = setInterval(function() {
+						document.getElementById("timer").innerHTML = "Next sound in 4 minutes";
+					}, 1000);
+				}
+			} else { // stop the sounds outside of the specified time range
+				sound1.pause();
+				sound1.currentTime = 0;
+				sound2.pause();
+				sound2.currentTime = 0;
+				clearInterval(timer);
+				document.getElementById("timer").innerHTML = "";
 			}
 		}
-		
-		// define a function to stop the loop
-		function stopLoop() {
-			clearTimeout(timer);
-			sound1.pause();
-			sound2.pause();
-		}
+
+		// start checking the time every second
+		timer = setInterval(checkTime, 1000);
 	</script>
 </head>
-<body onload="startLoop()" onunload="stopLoop()">
+<body>
 	<h1>Sound Player</h1>
-	<div id="timer">Hitri zmenki</div>
+	<div id="timer"></div>
 </body>
 </html>
