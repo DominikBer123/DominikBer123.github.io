@@ -1,81 +1,45 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Timer with Sound</title>
-</head>
-<body>
-
-	<!-- Display countdown until next sound -->
-	<p>Next sound in: <span id="countdown">-</span> seconds</p>
-
-	<!-- Display text based on sequence -->
-	<h1 id="sequence-text"></h1>
-
-	<!-- Play sound files -->
-	<audio id="sound1" src="sounds/sound1.mp3"></audio>
-	<audio id="sound2" src="sounds/sound2.mp3"></audio>
-
-	<!-- JavaScript to control timer and sequence -->
+	<title>Sound Player</title>
 	<script type="text/javascript">
-		var startTime = new Date();
-		startTime.setHours(8, 30, 0); // Set timer start time
-
-		var endTime = new Date();
-		endTime.setHours(23, 0, 0); // Set timer end time
-
-		var sequenceLength = 8 * 60 * 1000; // Sequence length in milliseconds
-		var sound1Time = 6 * 60 * 1000; // Time to play sound1 in milliseconds
-		var sound2Time = sequenceLength - 1000; // Time to play sound2 in milliseconds
-
-		var countdownElement = document.getElementById('countdown');
-		countdownElement.innerHTML = (startTime - new Date()) / 1000; // Initialize countdown with default value
-		var sequenceTextElement = document.getElementById('sequence-text');
-		var sound1Element = document.getElementById('sound1');
-		var sound2Element = document.getElementById('sound2');
-
-		var updateTimer = function() {
-			var currentTime = new Date();
-			var timeDiff = endTime - currentTime;
-
-			if (timeDiff <= 0) {
-				// Timer has ended
-				clearInterval(intervalId);
-				return;
-			}
-
-			// Calculate time remaining until next sound
-			var timeRemaining;
-			var sequenceText;
-			if (currentTime < startTime || currentTime > (startTime + sequenceLength)) {
-				// Before or after sequence
-				timeRemaining = startTime - currentTime;
-				sequenceText = '';
-			} else if (currentTime < (startTime + sound1Time)) {
-				// First part of sequence
-				timeRemaining = (startTime + sound1Time) - currentTime;
-				sequenceText = 'Hitri zmenki';
-				sound1Element.play(); // Play sound1
-			} else {
-				// Second part of sequence
-				timeRemaining = (startTime + sequenceLength) - currentTime;
-				sequenceText = 'zamenjaj podjetje';
-				if (timeRemaining <= 1000) {
-					sound2Element.play(); // Play sound2
-				}
-			}
-
-			// Display countdown and sequence text
-			countdownElement.innerHTML = (timeRemaining / 1000).toFixed(0);
-			sequenceTextElement.innerHTML = sequenceText;
-		};
-
-		var startTimer = function() {
-			updateTimer();
-			var intervalId = setInterval(updateTimer, 1000);
-		};
-
-		window.onload = startTimer;
+		// define variables for the sounds and timer
+		var sound1 = new Audio("sounds/sound1.mp3");
+		var sound2 = new Audio("sounds/sound2.mp3");
+		var timer;
+		
+		// define a function to play sound1 and start the countdown timer
+		function playSound1() {
+			clearTimeout(timer);
+			document.getElementById("timer").innerHTML = "Hitri zmenki";
+			sound1.play();
+			timer = setTimeout(playSound2, 120000); // play sound2 after 2 minutes
+		}
+		
+		// define a function to play sound2 and start the countdown timer
+		function playSound2() {
+			clearTimeout(timer);
+			document.getElementById("timer").innerHTML = "Zamenjaj podjetja";
+			sound2.play();
+			timer = setTimeout(playSound1, 360000); // play sound1 after 6 minutes
+		}
+		
+		// define a function to start the loop
+		function startLoop() {
+			// play sound1 after 6 minutes
+			timer = setTimeout(playSound1, 360000);
+		}
+		
+		// define a function to stop the loop
+		function stopLoop() {
+			clearTimeout(timer);
+			sound1.pause();
+			sound2.pause();
+		}
 	</script>
-
+</head>
+<body onload="startLoop()" onunload="stopLoop()">
+	<h1>Sound Player</h1>
+	<div id="timer">Hitri zmenki</div>
 </body>
 </html>
