@@ -10,8 +10,8 @@
 		// define a function to check the time and play the sounds
 		function checkTime() {
 			var currentTime = new Date();
-			var startTime = new Date(currentTime.getFullYear(), currentTime.getMonth(), currentTime.getDate(), 8, 30, 0); // start at 8.30 am
-			var endTime = new Date(currentTime.getFullYear(), currentTime.getMonth(), currentTime.getDate(), 12, 0, 0); // end at 12.00 pm
+			var startTime = new Date(currentTime.getFullYear(), currentTime.getMonth(), currentTime.getDate(), 0, 0, 0); // start at 8.30 am
+			var endTime = new Date(currentTime.getFullYear(), currentTime.getMonth(), currentTime.getDate(), 8, 30, 0); // end at 12.00 pm
 			if (currentTime >= startTime && currentTime <= endTime) { // only play sounds during the specified time range
 				var elapsedMinutes = (currentTime.getMinutes() + 60 * currentTime.getHours() - 510) % 10; // get the number of elapsed 10-minute intervals
 				if (elapsedMinutes == 6 && !sound1.paused) { // play sound1 after 6 minutes
@@ -39,7 +39,7 @@
 				sound2.pause();
 				sound2.currentTime = 0;
 				clearInterval(timer);
-				document.getElementById("timer").innerHTML = "";
+				document.getElementById("timer").innerHTML = "izven obmocja delovanja";
 			}
 		}
 
