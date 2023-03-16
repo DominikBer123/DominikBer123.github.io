@@ -29,11 +29,11 @@ var sound2 = new Audio("sound2.mp3");
 
 
 function start(){
-    document.getElementById("stanje").innerHTML ="zac"
+    document.getElementById("stanje").innerHTML ="Hitri zmenki potekajo"
     sound.play()
 }
 function zamenjaj(){
-    document.getElementById("stanje").innerHTML ="zamenjaj podjetje"
+    document.getElementById("stanje").innerHTML ="Menjava stojnic"
     sound.play()
 }
 function checkTime(){
@@ -93,24 +93,24 @@ function checkTime(){
         //preveri zač stanja
         if (ZacHZ[i].getHours()==d.getHours() && ZacHZ[i].getMinutes()== d.getMinutes() && ZacHZ[i].getSeconds()== d.getSeconds()){
           //zaigra zvok
-          document.getElementById("stanje").innerHTML ="zac";
-          sound1.play();
+          document.getElementById("stanje").innerHTML ="Hitri zmenki potekajo";
+          sound.play();
 
           ///
           break;
         }
         else if (Alarm30Hz[i].getHours()==d.getHours() && Alarm30Hz[i].getMinutes()== d.getMinutes() && Alarm30Hz[i].getSeconds()== d.getSeconds()){
         //zaigra zvok
-        document.getElementById("stanje").innerHTML ="alarm";
-        sound.play();
+        document.getElementById("stanje").innerHTML ="Samo še 30 sekund";
+        sound1.play();
           ///
           break;
         
         }
 
         else if (KonecHZ[i].getHours()== d.getHours() && KonecHZ[i].getMinutes()==d.getMinutes() && KonecHZ[i].getSeconds() == d.getSeconds()){
-            sound1.play();
-            document.getElementById("stanje").innerHTML ="zamenjaj stojnico";
+            sound2.play();
+            document.getElementById("stanje").innerHTML ="Menjava stojnic";
 
         };
     };
