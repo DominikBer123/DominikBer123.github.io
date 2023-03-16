@@ -1,54 +1,176 @@
+<!DOCTYPE html>
 <html>
-<head>
-	<title>Sound Player</title>
-	<script type="text/javascript">
-		// define variables for the sounds and timer
-		var sound1 = new Audio("sounds\sound1.mp3");
-		var sound2 = new Audio("sounds\sound2.mp3");
-		var timer;
-
-		// define a function to check the time and play the sounds
-		function checkTime() {
-			var currentTime = new Date();
-			var startTime = new Date(currentTime.getFullYear(), currentTime.getMonth(), currentTime.getDate(), 0, 0, 0); // start at 8.30 am
-			var endTime = new Date(currentTime.getFullYear(), currentTime.getMonth(), currentTime.getDate(), 8, 30, 0); // end at 12.00 pm
-			if (currentTime >= startTime && currentTime <= endTime) { // only play sounds during the specified time range
-				var elapsedMinutes = (currentTime.getMinutes() + 60 * currentTime.getHours() - 510) % 10; // get the number of elapsed 10-minute intervals
-				if (elapsedMinutes == 6 && !sound1.paused) { // play sound1 after 6 minutes
-					sound1.pause();
-					sound1.currentTime = 0;
-					sound2.pause();
-					sound2.currentTime = 0;
-					sound1.play();
-					timer = setInterval(function() {
-						document.getElementById("timer").innerHTML = "Next sound in 2 minutes";
-					}, 1000);
-				} else if (elapsedMinutes == 8 && !sound2.paused) { // play sound2 after 8 minutes
-					sound1.pause();
-					sound1.currentTime = 0;
-					sound2.pause();
-					sound2.currentTime = 0;
-					sound2.play();
-					timer = setInterval(function() {
-						document.getElementById("timer").innerHTML = "Next sound in 4 minutes";
-					}, 1000);
-				}
-			} else { // stop the sounds outside of the specified time range
-				sound1.pause();
-				sound1.currentTime = 0;
-				sound2.pause();
-				sound2.currentTime = 0;
-				clearInterval(timer);
-				document.getElementById("timer").innerHTML = "izven obmocja delovanja";
-			}
-		}
-
-		// start checking the time every second
-		timer = setInterval(checkTime, 500);
-	</script>
-</head>
 <body>
-	<h1>Sound Player</h1>
-	<div id=timer></div>
+<audio controls src="Sound.mp3"></audio>
+
+<h1>Dobrodošli na Hitrih zmenkih</h1>
+<p ></p>
+<h2 id = "stanje"> </h2>
+<p>Trnutni čas:</p>
+
+<p1 id="demo"></p1>
+<p2 id="demo1"></p2>
+<p3 id="demo2"></p3>
+<p4 id ="demo3"></p4>
+<p5 id="demo4"></p5>
+<p6 id ="demo5"></p6>
+
+<h3 id = "stanje"></h3>
+
+<h4 id="alarm">	</h4>
+
+<script>
+var sound1 = new Audio("Sound.mp3");
+function checkTime(){
+    //Dobi trenutni čas
+    const d = new Date();
+    var pretvorba = new Date(2023,03,15,0,0,0)
+    //šas kdaj se kaj more zgoditi
+    var ZacHZ= [
+    
+  new Date(2023,03,16,02,20,00),
+  new Date(2023,03,16,02,21,00),
+  new Date(2023,03,16,02,22,00),
+  new Date(2023,03,16,02,23,00),
+  new Date(2023,03,16,02,24,00),
+  new Date(2023,03,16,02,25,00),
+  new Date(2023,03,16,02,26,00),
+  new Date(2023,03,16,02,27,00),
+  new Date(2023,03,16,02,28,00),
+  new Date(2023,03,16,02,29,00),
+  new Date(2023,03,16,02,30,00),
+  new Date(2023,03,16,02,31,00),
+  new Date(2023,03,16,02,32,00),
+  new Date(2023,03,16,02,33,00),
+  new Date(2023,03,16,02,34,00),
+  new Date(2023,03,16,02,35,00),
+  new Date(2023,03,16,02,36,00),
+  new Date(2023,03,16,02,37,00),
+  new Date(2023,03,16,02,38,00),
+  new Date(2023,03,16,02,39,00)
+
+    ];
+    var Alarm30Hz = [
+  new Date(2023,03,16,02,20,10),
+  new Date(2023,03,16,02,21,10),
+  new Date(2023,03,16,02,22,10),
+  new Date(2023,03,16,02,23,10),
+  new Date(2023,03,16,02,24,10),
+  new Date(2023,03,16,02,25,10),
+  new Date(2023,03,16,02,26,10),
+  new Date(2023,03,16,02,27,10),
+  new Date(2023,03,16,02,28,10),
+  new Date(2023,03,16,02,29,10),
+  new Date(2023,03,16,02,30,10),
+  new Date(2023,03,16,02,31,10),
+  new Date(2023,03,16,02,32,10),
+  new Date(2023,03,16,02,33,10),
+  new Date(2023,03,16,02,34,10),
+  new Date(2023,03,16,02,35,10),
+  new Date(2023,03,16,02,36,10),
+  new Date(2023,03,16,02,37,10),
+  new Date(2023,03,16,02,38,10),
+  new Date(2023,03,16,02,39,10)
+    ];
+    var KonecHZ = [
+  new Date(2023,03,16,02,20,30),
+  new Date(2023,03,16,02,21,30),
+  new Date(2023,03,16,02,22,30),
+  new Date(2023,03,16,02,23,30),
+  new Date(2023,03,16,02,24,30),
+  new Date(2023,03,16,02,25,30),
+  new Date(2023,03,16,02,26,30),
+  new Date(2023,03,16,02,27,30),
+  new Date(2023,03,16,02,28,30),
+  new Date(2023,03,16,02,29,30),
+  new Date(2023,03,16,02,30,30),
+  new Date(2023,03,16,02,31,30),
+  new Date(2023,03,16,02,32,30),
+  new Date(2023,03,16,02,33,30),
+  new Date(2023,03,16,02,34,30),
+  new Date(2023,03,16,02,35,30),
+  new Date(2023,03,16,02,36,30),
+  new Date(2023,03,16,02,37,30),
+  new Date(2023,03,16,02,38,30),
+  new Date(2023,03,16,02,39,10)
+    ];
+
+
+    //koda za igranje zvoka ob pravi čas
+    
+    for (let i =0; i<ZacHZ.length;i++){
+        //preveri zač stanja
+        if (ZacHZ[i].getHours()==d.getHours() && ZacHZ[i].getMinutes()== d.getMinutes() && ZacHZ[i].getSeconds()== d.getSeconds()){
+          //zaigra zvok
+          document.getElementById("alarm").innerHTML ="zac";
+          sound1.play()
+
+          ///
+          break;
+        }
+        else if (Alarm30Hz[i].getHours()==d.getHours() && Alarm30Hz[i].getMinutes()== d.getMinutes() && Alarm30Hz[i].getSeconds()== d.getSeconds()){
+        //zaigra zvok
+        document.getElementById("alarm").innerHTML ="alarm";
+        sound1.play()
+          ///
+          break;
+        }
+        else if(KonecHZ[i].getHours()<=d.getHours() && KonecHZ[i].getMinutes()<= d.getMinutes() && KonecHZ[i].getSeconds()<= d.getSeconds() 
+                && ZacHZ[i+1].getHours()>=d.getHours() && ZacHZ[i+1].getMinutes()>= d.getMinutes() && 59>= d.getSeconds()){
+            //zaigra zvok
+            document.getElementById("alarm").innerHTML ="zamenjaj postaje";
+            sound1.play()
+
+          ///
+          break;
+        }
+    };
+    //for (let i =0; i<ZacHZ.length;i++){
+    //    if (ZacHZ[i].getHours() >= d.getHours()>=KonecHZ[i].getHours() &&
+    //        ZacHZ[i].getMinutes() <= d.getMinutes() <=KonecHZ[i].getMinutes()){
+    //            document.getElementById("stanje").innerHTML =  "Izvaja se HITRI ZMENEK!!";
+    //            document.getElementById("timer").innerHTML =  "Imate še: " + String(KonecHZ[i].getMinutes() - d.getMinutes()+"min in "+ String(KonecHZ[i].getMinutes()-d.getMinutes()+"s"));
+    //            //mogoče treba še dodati -1min pri timerju
+    //            if (Alarm30Hz[i].getHours() <= d.getHours()<=KonecHZ[i].getHours() &&
+    //                Alarm30Hz[i].getMinutes() <= d.getMinutes() <=KonecHZ[i].getMinutes()&&
+    //                Alarm30Hz[i].getSeconds() <= d.getSeconds() <= 59){
+    //                    document.getElementById("alarm").innerHTML ="Zaključujte z Hitrimi zmenki samo še 30s!";
+    //            } else{
+    //                document.getElementById("alarm").innerHTML ="";
+    //            }
+//
+//
+    //    }else if (ZacHZ[i].getHours() <= d.getHours()<=KonecHZ[i].getHours() &&
+    //        ZacHZ[i].getMinutes() >= d.getMinutes() >=KonecHZ[i].getMinutes()){
+    //            document.getElementById("stanje").innerHTML =  "Menjava Podjetij!!";
+    //            document.getElementById("timer").innerHTML =  "Imate še: " + String(ZacHZ[i].getMinutes() - d.getMinutes()+"min in "+ String(ZacHZ[i].getMinutes()-d.getMinutes()+"s"))
+    //    } else{
+    //        document.getElementById("alarm").innerHTML ="/";
+    //        document.getElementById("stanje").innerHTML ="/";
+    //        document.getElementById("timer").innerHTML ="/";
+    //    }
+    //        ;
+//
+    //}
+    
+
+
+
+
+
+    document.getElementById("demo").innerHTML = d.getHours();
+    document.getElementById("demo1").innerHTML = d.getMinutes();
+    document.getElementById("demo2").innerHTML = d.getSeconds();
+
+
+}
+
+
+var x;
+
+x=setInterval(checkTime, 1000)
+
+</script>
+
 </body>
 </html>
