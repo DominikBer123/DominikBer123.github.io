@@ -1,139 +1,20 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap">
+    <title>Countdown Timer</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
 <body>
-    <p>zvok</p>
-<audio controls src="Sound.mp3"></audio>
-<audio controls src="sound1.mp3"></audio>
-<audio controls src="sound2.mp3"></audio>
-<p><button onclick="start()">HZ se izvajajo</button><button onclick="zamenjaj()">Zamenjaj podjetja</button></p>
-
-
-<h1>Dobrodošli na Hitrih zmenkih</h1>
-<p ></p>
-<h2 id = "stanje"> </h2>
-<p>Trnutni čas:</p>
-
-<p1 id="demo"></p1>
-<p2 id="demo1"></p2>
-<p3 id="demo2"></p3>
-<p4 id ="demo3"></p4>
-<p5 id="demo4"></p5>
-<p6 id ="demo5"></p6>
-
-
-<script>
-
-var sound = new Audio("Sound.mp3");
-var sound1 = new Audio("sound1.mp3");
-var sound2 = new Audio("sound2.mp3");
-
-
-function start(){
-    document.getElementById("stanje").innerHTML ="Hitri zmenki potekajo"
-    sound.play()
-}
-function zamenjaj(){
-    document.getElementById("stanje").innerHTML ="Menjava stojnic"
-    sound.play()
-}
-function checkTime(){
-    //Dobi trenutni čas
-    const d = new Date();
-
-    //šas kdaj se kaj more zgoditi
-    var ZacHZ= [
-  new Date(2023,03,16,14,30,00), new Date(2023,03,16,14,38,00),
-  new Date(2023,03,16,14,46,00), new Date(2023,03,16,14,54,00),
-  new Date(2023,03,16,15,02,00), new Date(2023,03,16,15,10,00),
-  new Date(2023,03,16,15,18,00), new Date(2023,03,16,15,26,00),
-  new Date(2023,03,16,15,34,00), new Date(2023,03,16,15,42,00),
-  new Date(2023,03,16,15,50,00), new Date(2023,03,16,15,58,00),
-  new Date(2023,03,16,16,06,00), new Date(2023,03,16,16,14,00),
-  new Date(2023,03,16,16,22,00), new Date(2023,03,16,16,30,00),
-  new Date(2023,03,16,16,38,00), new Date(2023,03,16,16,46,00),
-  new Date(2023,03,16,16,54,00), new Date(2023,03,16,17,02,00),
-  new Date(2023,03,16,17,10,00), new Date(2023,03,16,17,18,00),
-  new Date(2023,03,16,17,26,00), new Date(2023,03,16,17,34,00),
-  new Date(2023,03,16,17,42,00), new Date(2023,03,16,17,50,00)
-];
-    var Alarm30Hz =[
-  new Date(2023,03,16,14,35,30), new Date(2023,03,16,14,43,30),
-  new Date(2023,03,16,14,51,30), new Date(2023,03,16,14,59,30),
-  new Date(2023,03,16,15,07,30), new Date(2023,03,16,15,15,30),
-  new Date(2023,03,16,15,23,30), new Date(2023,03,16,15,31,30),
-  new Date(2023,03,16,15,39,30), new Date(2023,03,16,15,47,30),
-  new Date(2023,03,16,15,55,30), new Date(2023,03,16,16,03,30),
-  new Date(2023,03,16,16,11,30), new Date(2023,03,16,16,19,30),
-  new Date(2023,03,16,16,27,30), new Date(2023,03,16,16,35,30),
-  new Date(2023,03,16,16,43,30), new Date(2023,03,16,16,51,30),
-  new Date(2023,03,16,16,59,30), new Date(2023,03,16,17,07,30),
-  new Date(2023,03,16,17,15,30), new Date(2023,03,16,17,23,30),
-  new Date(2023,03,16,17,31,30), new Date(2023,03,16,17,39,30),
-  new Date(2023,03,16,17,47,30), new Date(2023,03,16,17,55,30)
-]
-    var KonecHZ = [
-  new Date(2023,03,16,14,36,00), new Date(2023,03,16,14,44,00),
-  new Date(2023,03,16,14,52,00), new Date(2023,03,16,15,00,00),
-  new Date(2023,03,16,15,08,00), new Date(2023,03,16,15,16,00),
-  new Date(2023,03,16,15,24,00), new Date(2023,03,16,15,32,00),
-  new Date(2023,03,16,15,40,00), new Date(2023,03,16,15,48,00),
-  new Date(2023,03,16,15,56,00), new Date(2023,03,16,16,04,00),
-  new Date(2023,03,16,16,12,00), new Date(2023,03,16,16,20,00),
-  new Date(2023,03,16,16,28,00), new Date(2023,03,16,16,36,00),
-  new Date(2023,03,16,16,44,00), new Date(2023,03,16,16,52,00),
-  new Date(2023,03,16,17,00,00), new Date(2023,03,16,17,08,00),
-  new Date(2023,03,16,17,16,00), new Date(2023,03,16,17,24,00),
-  new Date(2023,03,16,17,32,00), new Date(2023,03,16,17,40,00),
-  new Date(2023,03,16,17,48,00), new Date(2023,03,16,17,56,00)
-];
-
-    //koda za igranje zvoka ob pravi čas
-    
-    for (let i =0; i<ZacHZ.length;i++){
-        //preveri zač stanja
-        if (ZacHZ[i].getHours()==d.getHours() && ZacHZ[i].getMinutes()== d.getMinutes() && ZacHZ[i].getSeconds()== d.getSeconds()){
-          //zaigra zvok
-          document.getElementById("stanje").innerHTML ="Hitri zmenki potekajo";
-          sound.play();
-
-          ///
-          break;
-        }
-        else if (Alarm30Hz[i].getHours()==d.getHours() && Alarm30Hz[i].getMinutes()== d.getMinutes() && Alarm30Hz[i].getSeconds()== d.getSeconds()){
-        //zaigra zvok
-        document.getElementById("stanje").innerHTML ="Samo še 30 sekund";
-        sound1.play();
-          ///
-          break;
-        
-        }
-
-        else if (KonecHZ[i].getHours()== d.getHours() && KonecHZ[i].getMinutes()==d.getMinutes() && KonecHZ[i].getSeconds() == d.getSeconds()){
-            sound2.play();
-            document.getElementById("stanje").innerHTML ="Menjava stojnic";
-
-        };
-    };
-
-    
-
-
-
-
-
-    document.getElementById("demo").innerHTML = d.getHours();
-    document.getElementById("demo1").innerHTML = d.getMinutes();
-    document.getElementById("demo2").innerHTML = d.getSeconds();
-
-
-}
-
-
-var x;
-
-x=setInterval(checkTime, 1000)
-
-</script>
-
+    <div class="banner">
+        <img src="logo.jpg" alt="Logo" class="logo">
+        <h1>EESTEC JobFair 2024</h1>
+    </div>
+    <div class="rectangle">
+        <div id="countdown"></div>
+        <script src="opracije.js"></script>
+    </div>
 </body>
 </html>
